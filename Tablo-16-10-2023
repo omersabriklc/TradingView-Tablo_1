@@ -1,0 +1,216 @@
+// This source code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/
+// © omersabriklc
+
+//@version=5
+indicator("Tablo - 16-10-2023",overlay = true,max_bars_back = 5000)
+
+
+// screen_width_threshold = 1000
+// line_width = if screen_width < screen_width_threshold ? na : 2
+// plot(close, color=color.red, title="Gizli Çizgi", linewidth=line_width)
+
+
+symbol2=input.symbol("USDCAD",title="Symbol 2",group="SYMBOLS")
+symbol3=input.symbol("USDJPY",title="Symbol 3",group = "SYMBOLS")
+symbol4=input.symbol("USDGBP",title="Symbol 4",group="SYMBOLS")
+symbol5=input.symbol("USDTRY",title="Symbol 5",group = "SYMBOLS")
+symbol6=input.symbol("USDMXN",title="Symbol 6",group="SYMBOLS")
+
+src=input.source(close,title="Source",group="SOURCE")
+value1=input.int(50,title="Value 1",group="VALUES")
+value2=input.int(200,title="Value 2",group="VALUES")
+value3=input.int(8,title="Value 3",group="VALUES")
+value4=input.int(16,title="Value 4",group="VALUES")
+value5=input.int(20,title="Value 5",group="VALUES")
+value6=input.int(15,"Value 6",group="VALUES")
+input_timeframe=input.timeframe('1D',title="Timeframe",group="TIMEFRAME")
+
+
+sma_short_term=ta.sma(src,value1)
+sma_long_term=ta.sma(src,value2)
+ema_for_table=ta.ema(src,value3)
+hma_for_table=ta.hma(src,value4)
+wma_for_table=ta.wma(src,value5)
+rma_for_table=ta.rma(src,value6)
+
+smayaziDegisimi(variablee)=>
+    yazi="Symbol"
+    yazi := "SMA" + "(" + str.tostring(variablee,format.volume) + ")" 
+    yazi
+
+emayaziDegisimi(variablee)=>
+    yazi="Symbol"
+    yazi:="EMA" + "(" + str.tostring(variablee,format.volume) + ")"
+    yazi
+
+hmayaziDegisimi(variablee)=>
+    yazi="Symbol"
+    yazi:="HMA" + "(" + str.tostring(variablee,format.volume) + ")"
+    yazi
+
+wmayaziDegisimi(variablee)=>
+    yazi="Symbol"
+    yazi:="WMA" + "(" + str.tostring(variablee,format.volume) + ")"
+    yazi
+
+rmayaziDegisimi(variablee)=>
+    yazi="Symbol"
+    yazi:="RMA" + "(" + str.tostring(variablee,format.volume) + ")"
+    yazi
+
+//versiyon 75 74 ciddiye alma
+sembolyazidegisim(symbolss)=>
+    secimsembol=input.symbol("")
+    if symbolss==symbol2
+        secimsembol:=symbol2
+    if symbolss==symbol3
+        secimsembol:=symbol3
+    if symbolss==symbol4
+        secimsembol:=symbol4
+    if symbolss==symbol5
+        secimsembol:=symbol5
+    if symbolss==symbol6
+        secimsembol:=symbol6
+    secimsembol
+
+getrequestSecurity(symboll,timeframee,expr)=>
+    a=str.tostring(request.security(symboll,timeframee,expr),format.mintick)
+    a
+
+sma_short_if=if sma_short_term>sma_short_term[1]
+    colorr=color.green
+else if sma_short_term<sma_short_term[1]
+    colorr=color.red
+else
+    colorr=color.white
+
+sma_long_if=if sma_long_term>sma_long_term[1]
+    colorr=color.green
+else if sma_long_term<sma_long_term[1]
+    colorr=color.red
+else
+    colorr=color.white
+
+ema_if=if ema_for_table>ema_for_table[1]
+    colorr=color.green
+else if ema_for_table<ema_for_table[1]
+    colorr=color.red
+else
+    colorr=color.white
+
+hma_if=if hma_for_table>hma_for_table[1]
+    colorr=color.green
+else if hma_for_table<hma_for_table[1]
+    colorr=color.red
+else
+    colorr=color.white
+
+
+rma_if=if rma_for_table>rma_for_table[1]
+    colorr=color.green
+else if rma_for_table<rma_for_table[1]
+    colorr=color.red
+else
+    colorr=color.white
+
+wma_if=if wma_for_table>wma_for_table[1]
+    colorr=color.green
+else if wma_for_table<wma_for_table[1]
+    colorr=color.red
+else
+    colorr=color.white
+
+
+
+[sma_s2_if,sma_l2_if,e2_if,h2_if,r2_if,w2_if] = request.security(symbol2,input_timeframe,[sma_short_if,sma_long_if,ema_if,hma_if,rma_if,wma_if])
+[sma_s3_if,sma_l3_if,e3_if,h3_if,r3_if,w3_if] = request.security(symbol3,input_timeframe,[sma_short_if,sma_long_if,ema_if,hma_if,rma_if,wma_if])
+[sma_s4_if,sma_l4_if,e4_if,h4_if,r4_if,w4_if] = request.security(symbol4,input_timeframe,[sma_short_if,sma_long_if,ema_if,hma_if,rma_if,wma_if])
+[sma_s5_if,sma_l5_if,e5_if,h5_if,r5_if,w5_if] = request.security(symbol5,input_timeframe,[sma_short_if,sma_long_if,ema_if,hma_if,rma_if,wma_if])
+[sma_s6_if,sma_l6_if,e6_if,h6_if,r6_if,w6_if] = request.security(symbol6,input_timeframe,[sma_short_if,sma_long_if,ema_if,hma_if,rma_if,wma_if])
+
+[sma_short_term2,sma_long_term2,ema_for_table_2,hma_for_table_2,rma_for_table_2,wma_for_table_2] = request.security(symbol2,input_timeframe,[sma_short_term,sma_long_term,ema_for_table,hma_for_table,rma_for_table,wma_for_table])
+[sma_short_term3,sma_long_term3,ema_for_table_3,hma_for_table_3,rma_for_table_3,wma_for_table_3] = request.security(symbol3,input_timeframe,[sma_short_term,sma_long_term,ema_for_table,hma_for_table,rma_for_table,wma_for_table])
+[sma_short_term4,sma_long_term4,ema_for_table_4,hma_for_table_4,rma_for_table_4,wma_for_table_4] = request.security(symbol4,input_timeframe,[sma_short_term,sma_long_term,ema_for_table,hma_for_table,rma_for_table,wma_for_table])
+[sma_short_term5,sma_long_term5,ema_for_table_5,hma_for_table_5,rma_for_table_5,wma_for_table_5] = request.security(symbol5,input_timeframe,[sma_short_term,sma_long_term,ema_for_table,hma_for_table,rma_for_table,wma_for_table])
+[sma_short_term6,sma_long_term6,ema_for_table_6,hma_for_table_6,rma_for_table_6,wma_for_table_6] = request.security(symbol6,input_timeframe,[sma_short_term,sma_long_term,ema_for_table,hma_for_table,rma_for_table,wma_for_table])
+
+// 
+var table1=table.new(position = position.top_right,columns=7 , rows=7, bgcolor=color.silver, border_width=3 , frame_color=color.silver , frame_width=3 , border_color= color.black)
+
+if barstate.islast
+    table.cell(table1,column = 0,row=0 , text="All MA's U NEED Most",text_color = color.black)
+    table.cell(table1,column=1 ,row=0 , text=emayaziDegisimi(value3),text_color = color.black,bgcolor = color.silver)
+    table.cell(table1,column=2 ,row=0 , text=hmayaziDegisimi(value4),text_color = color.black,bgcolor = color.silver)
+    table.cell(table1,column=3 ,row=0 , text=rmayaziDegisimi(value5),text_color = color.black,bgcolor = color.silver)
+    table.cell(table1,column=4 ,row=0 , text=wmayaziDegisimi(value6),text_color = color.black,bgcolor = color.silver)
+
+    table.cell(table1,column=5 ,row=0 , text=smayaziDegisimi(value1),text_color = color.black,bgcolor = color.silver)
+    table.cell(table1,column=6 ,row=0 , text=smayaziDegisimi(value2),text_color = color.black,bgcolor = color.silver)
+
+    table.cell(table1,column = 0 , row=2 , text=sembolyazidegisim(symbol2),text_color = color.black,bgcolor = color.silver)
+    table.cell(table1,column = 0 , row=3 , text=sembolyazidegisim(symbol3),text_color = color.black,bgcolor = color.silver)
+    table.cell(table1,column = 0 , row=4 , text=sembolyazidegisim(symbol4),text_color = color.black,bgcolor = color.silver)
+    table.cell(table1,column = 0 , row=5 , text=sembolyazidegisim(symbol5),text_color = color.black,bgcolor = color.silver)
+    table.cell(table1,column = 0 , row=6 , text=sembolyazidegisim(symbol6),text_color = color.black,bgcolor = color.silver)
+
+
+    table.cell(table1,column = 1 , row=2 , text=getrequestSecurity((sembolyazidegisim(symbol2)),input_timeframe,ema_for_table),text_color = color.black,bgcolor =e2_if)
+    table.cell(table1,column = 2 , row=2 , text=getrequestSecurity((sembolyazidegisim(symbol2)),input_timeframe,hma_for_table),text_color = color.black,bgcolor =h2_if)
+    table.cell(table1,column = 3 , row=2 , text=getrequestSecurity((sembolyazidegisim(symbol2)),input_timeframe,rma_for_table),text_color = color.black,bgcolor  =r2_if)
+    table.cell(table1,column = 4 , row=2 , text=getrequestSecurity((sembolyazidegisim(symbol2)),input_timeframe,wma_for_table),text_color = color.black,bgcolor =w2_if)
+    table.cell(table1,column = 5 , row=2 , text=getrequestSecurity((sembolyazidegisim(symbol2)),input_timeframe,sma_short_term),text_color = color.black,bgcolor  =sma_s2_if)
+    table.cell(table1,column = 6 , row=2 , text=getrequestSecurity((sembolyazidegisim(symbol2)),input_timeframe,sma_long_term),text_color = color.black,bgcolor =sma_l2_if)
+
+    table.cell(table1,column = 1 , row=3 , text=getrequestSecurity((sembolyazidegisim(symbol3)),input_timeframe,ema_for_table),text_color = color.black,bgcolor=e3_if)
+    table.cell(table1,column = 2 , row=3 , text=getrequestSecurity((sembolyazidegisim(symbol3)),input_timeframe,hma_for_table),text_color =color.black,bgcolor =h3_if)
+    table.cell(table1,column = 3 , row=3 , text=getrequestSecurity((sembolyazidegisim(symbol3)),input_timeframe,rma_for_table),text_color =color.black,bgcolor =r3_if)
+    table.cell(table1,column = 4 , row=3 , text=getrequestSecurity((sembolyazidegisim(symbol3)),input_timeframe,wma_for_table),text_color =color.black,bgcolor =w3_if)
+    table.cell(table1,column = 5 , row=3 , text=getrequestSecurity((sembolyazidegisim(symbol3)),input_timeframe,sma_short_term),text_color = color.black,bgcolor =sma_s3_if)
+    table.cell(table1,column = 6 , row=3 , text=getrequestSecurity((sembolyazidegisim(symbol3)),input_timeframe,sma_long_term),text_color = color.black,bgcolor =sma_l3_if)
+
+    table.cell(table1,column = 1 , row=4 , text=getrequestSecurity((sembolyazidegisim(symbol4)),input_timeframe,ema_for_table),text_color =color.black,bgcolor =e4_if)
+    table.cell(table1,column = 2 , row=4 , text=getrequestSecurity((sembolyazidegisim(symbol4)),input_timeframe,hma_for_table),text_color =color.black,bgcolor =h4_if)
+    table.cell(table1,column = 3 , row=4 , text=getrequestSecurity((sembolyazidegisim(symbol4)),input_timeframe,rma_for_table),text_color =color.black,bgcolor =r4_if)
+    table.cell(table1,column = 4 , row=4 , text=getrequestSecurity((sembolyazidegisim(symbol4)),input_timeframe,wma_for_table),text_color =color.black,bgcolor =w4_if)
+    table.cell(table1,column = 5 , row=4 , text=getrequestSecurity((sembolyazidegisim(symbol4)),input_timeframe,sma_short_term),text_color = color.black,bgcolor =sma_s4_if)
+    table.cell(table1,column = 6 , row=4 , text=getrequestSecurity((sembolyazidegisim(symbol4)),input_timeframe,sma_long_term),text_color = color.black,bgcolor =sma_l4_if)
+
+    table.cell(table1,column = 1 , row=5 , text=getrequestSecurity((sembolyazidegisim(symbol5)),input_timeframe,ema_for_table),text_color =color.black,bgcolor =e5_if)
+    table.cell(table1,column = 2 , row=5 , text=getrequestSecurity((sembolyazidegisim(symbol5)),input_timeframe,hma_for_table),text_color =color.black,bgcolor =h5_if)
+    table.cell(table1,column = 3 , row=5 , text=getrequestSecurity((sembolyazidegisim(symbol5)),input_timeframe,rma_for_table),text_color = color.black,bgcolor =r5_if)
+    table.cell(table1,column = 4 , row=5 , text=getrequestSecurity((sembolyazidegisim(symbol5)),input_timeframe,wma_for_table),text_color =color.black,bgcolor =w5_if)
+    table.cell(table1,column = 5 , row=5 , text=getrequestSecurity((sembolyazidegisim(symbol5)),input_timeframe,sma_short_term),text_color = color.black,bgcolor =sma_s5_if)
+    table.cell(table1,column = 6 , row=5 , text=getrequestSecurity((sembolyazidegisim(symbol5)),input_timeframe,sma_long_term),text_color = color.black,bgcolor =sma_l5_if)
+
+    table.cell(table1,column = 1 , row=6 , text=getrequestSecurity((sembolyazidegisim(symbol6)),input_timeframe,ema_for_table),text_color =color.black,bgcolor =e6_if)
+    table.cell(table1,column = 2 , row=6 , text=getrequestSecurity((sembolyazidegisim(symbol6)),input_timeframe,hma_for_table),text_color =color.black,bgcolor =h6_if)
+    table.cell(table1,column = 3 , row=6 , text=getrequestSecurity((sembolyazidegisim(symbol6)),input_timeframe,rma_for_table),text_color = color.black,bgcolor=r6_if)
+    table.cell(table1,column = 4 , row=6 , text=getrequestSecurity((sembolyazidegisim(symbol6)),input_timeframe,wma_for_table),text_color =color.black,bgcolor =w6_if)
+    table.cell(table1,column = 5 , row=6 , text=getrequestSecurity((sembolyazidegisim(symbol6)),input_timeframe,sma_short_term),text_color = color.black,bgcolor =sma_s6_if)
+    table.cell(table1,column = 6 , row=6 , text=getrequestSecurity((sembolyazidegisim(symbol6)),input_timeframe,sma_long_term),text_color = color.black,bgcolor =sma_l6_if)
+
+
+
+
+// input_for_rows=input.int(7,title="Rows Value",group="INPUT FOR ROWS")
+// symbol1=input.symbol("XU100",title="Symbol 1",group="SYMBOLS")
+
+
+// if symbolss==symbol1
+//     secimsembol:=symbol1
+// [sma_s_if,sma_l_if,e_if,h_if,r_if,w_if] = request.security(symbol1,input_timeframe,[sma_short_if,sma_long_if,ema_if,hma_if,rma_if,wma_if])
+// [sma_short_term1,sma_long_term1,ema_for_table_1,hma_for_table_1,rma_for_table_1,wma_for_table_1] = request.security(symbol1,input_timeframe,[sma_short_term,sma_long_term,ema_for_table,hma_for_table,rma_for_table,wma_for_table])
+// table.cell(table1,column = 0 , row=1 , text=sembolyazidegisim(symbol1),text_color = color.black,bgcolor = color.silver)
+// table.cell(table1,column = 1 , row=1 , text=getrequestSecurity((sembolyazidegisim(symbol1)),input_timeframe,ema_for_table),text_color =color.black,bgcolor =color.silver)
+// table.cell(table1,column = 2 , row=1 , text=getrequestSecurity((sembolyazidegisim(symbol1)),input_timeframe,hma_for_table),text_color = color.black,bgcolor =color.silver)
+// table.cell(table1,column = 3 , row=1 , text=getrequestSecurity((sembolyazidegisim(symbol1)),input_timeframe,rma_for_table),text_color = color.black,bgcolor =color.silver)
+// table.cell(table1,column = 4 , row=1 , text=getrequestSecurity((sembolyazidegisim(symbol1)),input_timeframe,wma_for_table),text_color = color.black,bgcolor =color.silver)
+// table.cell(table1,column = 5 , row=1 , text=getrequestSecurity((sembolyazidegisim(symbol1)),input_timeframe,sma_short_term),text_color = color.black,bgcolor =color.silver)
+// table.cell(table1,column = 6 , row=1 , text=getrequestSecurity((sembolyazidegisim(symbol1)),input_timeframe,sma_long_term),text_color = color.black,bgcolor =color.silver)
+
+
+// symbol_and_getexact_color(symboll,timeframee,colorexpr)=>
+//     q=request.security(symboll,timeframee,colorexpr)
+
+
+
